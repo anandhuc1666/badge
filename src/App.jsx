@@ -103,6 +103,13 @@ function App() {
      setEdit(index)
      setTextEdit(todo[index])
   }
+  const update = (index)=>{
+    setTodo([...todo,textEdit])
+    setEdit(null)
+    setTodo((pre)=>pre.filter((_,k)=>k !== index))
+  }
+  console.log(todo)
+  let number = todo[3]
   return (
     <div>
       <input type="text" value={text} onChange={(e)=>setText(e.target.value)}/>
@@ -115,13 +122,14 @@ function App() {
                     edit === k ? 
                     <>
                     <input type="text" value={textEdit} onChange={(e)=>setTextEdit(e.target.value)}/>
-                    <button onClick={()=>handleEdit(k)}>edit</button>
-                    </>:<></>
+                    <button onClick={()=>update(k)}>update</button>
+                    </>:<>{i}<button onClick={()=>handleEdit(k)}>edit</button>  </>
                   }
             </li>
           ))
         }
       </ul>
+      <h2>{number}</h2>
     </div>
   )
 }
