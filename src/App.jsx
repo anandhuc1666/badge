@@ -88,48 +88,81 @@
 // }
 
 // export default App
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
+
+// function App() {
+//   const[text,setText]=useState('')
+//   const[todo,setTodo]=useState([])
+//   const[edit,setEdit]=useState(null)
+//   const[textEdit,setTextEdit]=useState('')
+//   const handleSend=()=>{
+//     setTodo([...todo,text])
+//     setText("")
+//   }
+//   const handleEdit =(index)=>{
+//      setEdit(index)
+//      setTextEdit(todo[index])
+//   }
+//   const update = (index)=>{
+//     setTodo([...todo,textEdit])
+//     setEdit(null)
+//     setTodo((pre)=>pre.filter((_,k)=>k !== index))
+//   }
+//   console.log(todo)
+//   let number = todo[3]
+//   return (
+//     <div>
+//       <input type="text" value={text} onChange={(e)=>setText(e.target.value)}/>
+//       <button onClick={handleSend}>send</button>
+//       <ul>
+//         {
+//           todo.map((i,k)=>(
+//             <li key={k}>
+//                   {
+//                     edit === k ? 
+//                     <>
+//                     <input type="text" value={textEdit} onChange={(e)=>setTextEdit(e.target.value)}/>
+//                     <button onClick={()=>update(k)}>update</button>
+//                     </>:<>{i}<button onClick={()=>handleEdit(k)}>edit</button>  </>
+//                   }
+//             </li>
+//           ))
+//         }
+//       </ul>
+//       <h2>{number}</h2>
+//     </div>
+//   )
+// }
+
+// export default App
+import React, { useRef, useState } from 'react'
 
 function App() {
-  const[text,setText]=useState('')
-  const[todo,setTodo]=useState([])
-  const[edit,setEdit]=useState(null)
-  const[textEdit,setTextEdit]=useState('')
-  const handleSend=()=>{
-    setTodo([...todo,text])
-    setText("")
+  const [time, setTime] = useState(0)
+  const [num,setNum]=useState()
+  let intervel = useRef(null)
+  const start = () => {
+    intervel.current = setInterval(()=>{
+      setTime((pre) => pre === Number(num) ? Number(num) : pre + 1)
+    },500)
   }
-  const handleEdit =(index)=>{
-     setEdit(index)
-     setTextEdit(todo[index])
+  const stop = () => {
+    clearInterval(intervel.current)
   }
-  const update = (index)=>{
-    setTodo([...todo,textEdit])
-    setEdit(null)
-    setTodo((pre)=>pre.filter((_,k)=>k !== index))
+
+  const reset = () => {
+    clearInterval(intervel.current)
+    setTime(0)
+    setNum("")
   }
-  console.log(todo)
-  let number = todo[3]
+
   return (
     <div>
-      <input type="text" value={text} onChange={(e)=>setText(e.target.value)}/>
-      <button onClick={handleSend}>send</button>
-      <ul>
-        {
-          todo.map((i,k)=>(
-            <li key={k}>
-                  {
-                    edit === k ? 
-                    <>
-                    <input type="text" value={textEdit} onChange={(e)=>setTextEdit(e.target.value)}/>
-                    <button onClick={()=>update(k)}>update</button>
-                    </>:<>{i}<button onClick={()=>handleEdit(k)}>edit</button>  </>
-                  }
-            </li>
-          ))
-        }
-      </ul>
-      <h2>{number}</h2>
+      <h2>{time === Number(num) && Number(num) ? `the time is full load:${time}` : time}</h2>
+      <button onClick={start}>start</button>
+      <button onClick={stop}>stop</button>
+      <button onClick={reset}>reset</button>
+      <input type="text" value={num} onChange={(e)=>setNum(e.target.value)}/>
     </div>
   )
 }
